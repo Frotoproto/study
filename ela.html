@@ -36,31 +36,27 @@
         button:hover {
             background-color: #45a049;
         }
-        input {
+        .choice-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
+            background-color: #032b58;
+            color: white;
+            border: none;
             border-radius: 8px;
-            transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-            background-color: #555;
-            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
         }
-        input:focus {
-            box-shadow: 0 0 5px #4CAF50;
-        }
-        #result {
-            margin-top: 15px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+        .choice-btn:hover {
+            background-color: #0a67d0;
+             background-color: #000000;
         }
         .correct {
-            color: green;
-            opacity: 1;
+            background-color: green !important;
         }
         .incorrect {
-            color: red;
-            opacity: 1;
+            background-color: red !important;
         }
         .toggle-btn {
             margin-top: 20px;
@@ -81,8 +77,7 @@
     <div class="container">
         <h1>Figurative Language Quiz</h1>
         <p id="question"></p>
-        <input type="text" id="answer" autofocus>
-        <button onclick="checkAnswer()">Check</button>
+        <div id="choices"></div>
         <p id="result"></p>
         <button class="toggle-btn" onclick="toggleMode()">Toggle Light/Dark Mode</button>
     </div>
@@ -96,7 +91,6 @@
             "Alliteration": "The repetition of the same initial consonant sound",
             "Oxymoron": "A combination of contradictory terms",
             "Idiom": "A phrase that has a meaning different from the literal meaning of its words",
-            "Pun": "A play on words",
             "Irony": "A contrast between expectation and reality"
         };
 
@@ -109,54 +103,46 @@
             isDefinitionQuestion = Math.random() < 0.5;
 
             document.getElementById("question").textContent = isDefinitionQuestion ? `What is the definition of ${currentQuestion}?` : `What type of figurative language is this: "${figurativeLanguage[currentQuestion]}"?`;
-            document.getElementById("answer").value = "";
-            document.getElementById("answer").focus();
+            document.getElementById("choices").innerHTML = "";
+
+            const choices = isDefinitionQuestion ? Object.values(figurativeLanguage) : types;
+            choices.forEach(choice => {
+                const button = document.createElement("button");
+                button.textContent = choice;
+                button.className = "choice-btn";
+                button.onclick = () => checkAnswer(button, choice);
+                document.getElementById("choices").appendChild(button);
+            });
         }
 
-        function checkAnswer() {
-            const userAnswer = document.getElementById("answer").value.trim();
+        function checkAnswer(button, userAnswer) {
             const correctAnswer = isDefinitionQuestion ? figurativeLanguage[currentQuestion] : currentQuestion;
 
-            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                document.getElementById("result").textContent = "Correct!";
-                document.getElementById("result").classList.add("correct");
-                document.getElementById("result").classList.remove("incorrect");
+            if (userAnswer === correctAnswer) {
+                button.classList.add("correct");
             } else {
-                document.getElementById("result").textContent = `Incorrect. The answer is ${correctAnswer}.`;
-                document.getElementById("result").classList.add("incorrect");
-                document.getElementById("result").classList.remove("correct");
+                button.classList.add("incorrect");
+                document.querySelectorAll(".choice-btn").forEach(btn => {
+                    if (btn.textContent === correctAnswer) {
+                        btn.classList.add("correct");
+                    }
+                });
             }
 
-            document.getElementById("result").style.opacity = 1;
-
-            setTimeout(function() {
-                document.getElementById("result").style.opacity = 0;
-                newQuestion();
-            }, 2000);
+            setTimeout(newQuestion, 2000);
         }
-
-        document.getElementById("answer").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                checkAnswer();
-            }
-        });
 
         function toggleMode() {
             const body = document.body;
             const container = document.querySelector('.container');
-            const input = document.getElementById("answer");
             const isDarkMode = body.style.backgroundColor === 'rgb(51, 51, 51)';
 
             body.style.backgroundColor = isDarkMode ? '#f0f0f0' : '#333';
             body.style.color = isDarkMode ? '#000' : '#fff';
             container.style.backgroundColor = isDarkMode ? '#fff' : '#444';
-            input.style.backgroundColor = isDarkMode ? '#fff' : '#555';
-            input.style.color = isDarkMode ? '#000' : '#fff';
         }
 
         newQuestion();
-        document.getElementById("answer").style.backgroundColor = "#555";
-        document.getElementById("answer").style.color = "#fff";
     </script>
 </body>
 </html>
