@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Element Quiz</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            background-color: #555;
+            color: #fff;
+        }
+        input:focus {
+            box-shadow: 0 0 5px #4CAF50;
+        }
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .correct {
+            color: green;
+            opacity: 1;
+        }
+        .incorrect {
+            color: red;
+            opacity: 1;
+        }
+        .toggle-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+        .toggle-btn:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Element Quiz</h1>
+        <p id="question"></p>
+        <input type="text" id="answer" autofocus>
+        <button onclick="checkAnswer()">Check</button>
+        <p id="result"></p>
+        <button class="toggle-btn" onclick="toggleMode()">Toggle Light/Dark Mode</button>
+    </div>
+    <script>
+        const elements = {
+            "Hydrogen": "H", "Helium": "He", "Lithium": "Li", "Beryllium": "Be", "Boron": "B", "Carbon": "C",
+            "Nitrogen": "N", "Oxygen": "O", "Fluorine": "F", "Neon": "Ne", "Sodium": "Na", "Magnesium": "Mg",
+            "Aluminum": "Al", "Silicon": "Si", "Phosphorus": "P", "Sulfur": "S", "Chlorine": "Cl", "Argon": "Ar",
+            "Potassium": "K", "Calcium": "Ca", "Scandium": "Sc", "Titanium": "Ti", "Vanadium": "V", "Chromium": "Cr",
+            "Manganese": "Mn", "Iron": "Fe", "Cobalt": "Co", "Nickel": "Ni", "Copper": "Cu", "Zinc": "Zn",
+            "Gallium": "Ga", "Germanium": "Ge", "Arsenic": "As", "Selenium": "Se", "Bromine": "Br"
+        };
+
+        let currentQuestion;
+        let isSymbolQuestion;
+
+        function newQuestion() {
+            const elementNames = Object.keys(elements);
+            currentQuestion = elementNames[Math.floor(Math.random() * elementNames.length)];
+            isSymbolQuestion = Math.random() < 0.5;
+
+            document.getElementById("question").textContent = isSymbolQuestion ? `What is the symbol for ${currentQuestion}?` : `What element has the symbol ${elements[currentQuestion]}?`;
+            document.getElementById("answer").value = "";
+            document.getElementById("answer").focus();
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("answer").value.trim();
+            const correctAnswer = isSymbolQuestion ? elements[currentQuestion] : currentQuestion;
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                document.getElementById("result").textContent = "Correct!";
+                document.getElementById("result").classList.add("correct");
+                document.getElementById("result").classList.remove("incorrect");
+            } else {
+                document.getElementById("result").textContent = `Incorrect. The answer is ${correctAnswer}.`;
+                document.getElementById("result").classList.add("incorrect");
+                document.getElementById("result").classList.remove("correct");
+            }
+
+            document.getElementById("result").style.opacity = 1;
+
+            setTimeout(function() {
+                document.getElementById("result").style.opacity = 0;
+                newQuestion();
+            }, 2000);
+        }
+
+        document.getElementById("answer").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+
+        function toggleMode() {
+            const body = document.body;
+            const container = document.querySelector('.container');
+            const input = document.getElementById("answer");
+            const isDarkMode = body.style.backgroundColor === 'rgb(51, 51, 51)';
+
+            body.style.backgroundColor = isDarkMode ? '#f0f0f0' : '#333';
+            body.style.color = isDarkMode ? '#000' : '#fff';
+            container.style.backgroundColor = isDarkMode ? '#fff' : '#444';
+            input.style.backgroundColor = isDarkMode ? '#fff' : '#555';
+            input.style.color = isDarkMode ? '#000' : '#fff';
+        }
+
+        newQuestion();
+        document.getElementById("answer").style.backgroundColor = "#555";
+        document.getElementById("answer").style.color = "#fff";
+    </script>
+</body>
+</html>
