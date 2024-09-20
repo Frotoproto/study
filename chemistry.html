@@ -88,20 +88,18 @@
         <button class="toggle-btn" onclick="toggleMode()">Toggle Light/Dark Mode</button>
     </div>
     <script>
-       const elements = {
-    "Hydrogen": "H", "Helium": "He", "Lithium": "Li", "Beryllium": "Be", "Boron": "B", "Carbon": "C",
-    "Nitrogen": "N", "Oxygen": "O", "Fluorine": "F", "Neon": "Ne", "Sodium": "Na", "Magnesium": "Mg",
-    "Aluminum": "Al", "Silicon": "Si", "Phosphorus": "P", "Sulfur": "S", "Chlorine": "Cl", "Argon": "Ar",
-    "Potassium": "K", "Calcium": "Ca", "Scandium": "Sc", "Titanium": "Ti", "Vanadium": "V", "Chromium": "Cr",
-    "Manganese": "Mn", "Iron": "Fe", "Cobalt": "Co", "Nickel": "Ni", "Copper": "Cu", "Zinc": "Zn",
-    "Gallium": "Ga", "Germanium": "Ge", "Arsenic": "As", "Selenium": "Se", "Bromine": "Br",
-    "Krypton": "Kr", "Rubidium": "Rb", "Strontium": "Sr", "Palladium": "Pd", "Silver": "Ag",
-    "Cadmium": "Cd", "Tin": "Sn", "Antimony": "Sb", "Tellurium": "Te", "Iodine": "I",
-    "Xenon": "Xe", "Cesium": "Cs", "Barium": "Ba",
-    "Tungsten": "W", "Osmium": "Os", "Iridium": "Ir", "Platinum": "Pt", "Gold": "Au",
-    "Mercury": "Hg", "Lead": "Pb", "Bismuth": "Bi", "Polonium": "Po", "Astatine": "At",
-    "Radon": "Rn", "Francium": "Fr", "Radium": "Ra", "Uranium": "U", "Plutonium": "Pu"
+      const elements = {
+   "Hydroxide": "OH-",
+   "Chlorate": "ClO3-",
+   "Chlorite": "ClO2-",
+   "Nitrate": "NO3-",
+   "Nitrite": "NO2-",
+   "Acetate": "C2H3O2-",
+   "Bromate": "BrO3-",
+   "Carbonate": "(CN-)",
+   "Iodate": "IO3-"
 };
+
 
         let currentQuestion;
         let isSymbolQuestion;
@@ -111,7 +109,7 @@
             currentQuestion = elementNames[Math.floor(Math.random() * elementNames.length)];
             isSymbolQuestion = Math.random() < 0.5;
 
-            document.getElementById("question").textContent = isSymbolQuestion ? `What is the symbol for ${currentQuestion}?` : `What element has the symbol ${elements[currentQuestion]}?`;
+            document.getElementById("question").textContent = isSymbolQuestion ? `What is the formula for ${currentQuestion}?` : `What Ion has this formula: ${elements[currentQuestion]}?`;
             document.getElementById("answer").value = "";
             document.getElementById("answer").focus();
         }
